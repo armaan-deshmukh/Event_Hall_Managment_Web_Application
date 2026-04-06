@@ -28,6 +28,19 @@ app.use("/api/users", userRouter);
 app.use("/api/packages", packageRouter);
 app.use("/api/bookings", bookingRouter);
 
+// --- FRONTEND DEPLOYMENT CONFIG ---
+// 1. Serve static files from the frontend's build folder
+const distPath = path.join(__dirname, '../../dist');
+app.use(express.static(distPath));
+
+// 2. Fallback: For all other requests, send the index.html (Supports React Router/SPA)
+app.get('*', (req: Request, res: Response) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(distPath, 'index.html'));
+  }
+});
+// ----------------------------------
+
 initializeDatabase().then(() => {
     app.listen(port, () => {
         console.log(`[server]: Server is running at http://localhost:${port}`);

@@ -28,3 +28,6 @@ backend/db/*.db
 *.njsproj
 *.sln
 *.sw?
+
+# Confidential Information
+PROJECT_DETAILS_CONFIDENTIAL.md
