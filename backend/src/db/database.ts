@@ -80,6 +80,53 @@ async function initializeDatabase() {
     `);
 
     console.log("Database tables are ready.");
+    
+    // Seed default packages if none exist
+    const packagesCount = await db.get('SELECT COUNT(*) as count FROM packages');
+    if (packagesCount.count === 0) {
+        console.log("Seeding default packages...");
+        const defaultPackages = [
+            {
+                id: '1',
+                name: 'Royal Wedding Package',
+                category: 'Wedding',
+                description: 'Complete wedding solution with premium catering and decoration.',
+                base_price: 50000,
+                max_guests: 500,
+                duration_hours: 12,
+                image_url: '/assets/wedding-package-A6TZQNiO.jpg'
+            },
+            {
+                id: '2',
+                name: 'Corporate Gala',
+                category: 'Corporate',
+                description: 'Professional setup for seminars and annual general meetings.',
+                base_price: 25000,
+                max_guests: 200,
+                duration_hours: 8,
+                image_url: '/assets/corporate-package-CxzTuEag.jpg'
+            },
+            {
+                id: '3',
+                name: 'Birthday Bash',
+                category: 'Birthday',
+                description: 'Fun-filled birthday setup with themes and magic shows.',
+                base_price: 15000,
+                max_guests: 100,
+                duration_hours: 4,
+                image_url: '/assets/birthday-package-BN4gN8vG.jpg'
+            }
+        ];
+
+        for (const pkg of defaultPackages) {
+            await db.run(
+                `INSERT INTO packages (id, name, category, description, base_price, max_guests, duration_hours, image_url) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
+            );
+        }
+        console.log("Seeding completed.");
+    }
 }
 
 export { getDbConnection, initializeDatabase };
