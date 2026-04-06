@@ -34,7 +34,7 @@ const distPath = path.join(__dirname, '../../dist');
 app.use(express.static(distPath));
 
 // 2. Fallback: For all other requests, send the index.html (Supports React Router/SPA)
-app.get('/*', (req: Request, res: Response) => {
+app.get('/:path*', (req: Request, res: Response) => {
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(distPath, 'index.html'));
   }
