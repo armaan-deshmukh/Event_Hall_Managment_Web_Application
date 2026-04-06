@@ -88,33 +88,63 @@ async function initializeDatabase() {
         const defaultPackages = [
             {
                 id: '1',
-                name: 'Royal Wedding Package',
+                name: 'Royal Wedding Suite',
                 category: 'Wedding',
-                description: 'Complete wedding solution with premium catering and decoration.',
-                base_price: 50000,
-                max_guests: 500,
+                description: 'A magnificent hall for a royal wedding experience with full-scale decoration and catering.',
+                base_price: 75000,
+                max_guests: 600,
                 duration_hours: 12,
-                image_url: '/assets/wedding-package-A6TZQNiO.jpg'
+                image_url: '/Royal Wedding.png'
             },
             {
                 id: '2',
-                name: 'Corporate Gala',
-                category: 'Corporate',
-                description: 'Professional setup for seminars and annual general meetings.',
-                base_price: 25000,
-                max_guests: 200,
-                duration_hours: 8,
-                image_url: '/assets/corporate-package-CxzTuEag.jpg'
+                name: 'Classic Wedding Decor',
+                category: 'Wedding',
+                description: 'Elegant and traditional wedding setup for memorable family celebrations.',
+                base_price: 45000,
+                max_guests: 400,
+                duration_hours: 10,
+                image_url: '/Classic Wedding.png'
             },
             {
                 id: '3',
-                name: 'Birthday Bash',
+                name: 'Engagement Party Gala',
+                category: 'Engagement',
+                description: 'Specialized arrangements for engagement ceremonies with luxury theme options.',
+                base_price: 30000,
+                max_guests: 200,
+                duration_hours: 6,
+                image_url: '/Engagement Party.png'
+            },
+            {
+                id: '4',
+                name: 'Birthday Bash Hall',
                 category: 'Birthday',
-                description: 'Fun-filled birthday setup with themes and magic shows.',
+                description: 'A vibrant and customizable hall for birthday parties of all ages.',
                 base_price: 15000,
-                max_guests: 100,
+                max_guests: 150,
                 duration_hours: 4,
-                image_url: '/assets/birthday-package-BN4gN8vG.jpg'
+                image_url: '/Birthday Hall.png'
+            },
+            {
+                id: '5',
+                name: 'Kids Fantasy Party',
+                category: 'Birthday',
+                description: 'Specially designed theme parties for kids with fun activities and balloons.',
+                base_price: 12000,
+                max_guests: 80,
+                duration_hours: 4,
+                image_url: '/Kids Birthday Party.png'
+            },
+            {
+                id: '6',
+                name: 'Networking Event Lounge',
+                category: 'Corporate',
+                description: 'Professional and calm setting for business meetups and corporate networking.',
+                base_price: 20000,
+                max_guests: 120,
+                duration_hours: 5,
+                image_url: '/Netwroking Event.png'
             }
         ];
 
