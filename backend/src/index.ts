@@ -24,10 +24,6 @@ if (!fs.existsSync(uploadsPath)) {
 }
 app.use('/uploads', express.static(uploadsPath));
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
-
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/packages", packageRouter);
