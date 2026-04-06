@@ -94,7 +94,7 @@ async function initializeDatabase() {
                 base_price: 75000,
                 max_guests: 600,
                 duration_hours: 12,
-                image_url: '/Royal Wedding.png'
+                image_url: '/royal_wedding.png'
             },
             {
                 id: '2',
@@ -104,7 +104,7 @@ async function initializeDatabase() {
                 base_price: 45000,
                 max_guests: 400,
                 duration_hours: 10,
-                image_url: '/Classic Wedding.png'
+                image_url: '/classic_wedding.png'
             },
             {
                 id: '3',
@@ -114,7 +114,7 @@ async function initializeDatabase() {
                 base_price: 30000,
                 max_guests: 200,
                 duration_hours: 6,
-                image_url: '/Engagement Party.png'
+                image_url: '/engagement_party.png'
             },
             {
                 id: '4',
@@ -124,7 +124,7 @@ async function initializeDatabase() {
                 base_price: 15000,
                 max_guests: 150,
                 duration_hours: 4,
-                image_url: '/Birthday Hall.png'
+                image_url: '/birthday_hall.png'
             },
             {
                 id: '5',
@@ -134,7 +134,7 @@ async function initializeDatabase() {
                 base_price: 12000,
                 max_guests: 80,
                 duration_hours: 4,
-                image_url: '/Kids Birthday Party.png'
+                image_url: '/kids_birthday_party.png'
             },
             {
                 id: '6',
@@ -144,7 +144,7 @@ async function initializeDatabase() {
                 base_price: 20000,
                 max_guests: 120,
                 duration_hours: 5,
-                image_url: '/Netwroking Event.png'
+                image_url: '/networking_event.png'
             }
         ];
 
