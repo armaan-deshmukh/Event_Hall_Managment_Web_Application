@@ -1,11 +1,18 @@
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import path from "path";
+import fs from "fs";
 
 // This is a singleton to ensure we only have one database connection.
 let db: Database | null = null;
 
 const dbPath = path.resolve(__dirname, '..', '..', 'db', 'event-hall.db');
+
+// Ensure the directory for the database exists
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+    fs.mkdirSync(dbDir, { recursive: true });
+}
 
 async function getDbConnection(): Promise<Database> {
     if (db) {

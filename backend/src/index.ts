@@ -9,6 +9,7 @@ import userRouter from "./routes/user.routes";
 import packageRouter from "./routes/package.routes";
 import bookingRouter from "./routes/booking.routes";
 import path from "path";
+import fs from "fs";
 
 const app: Express = express();
 const port = 3000;
@@ -17,7 +18,11 @@ app.use(cors());
 app.use(express.json());
 
 // Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+const uploadsPath = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsPath));
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
