@@ -2,6 +2,7 @@ import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import path from "path";
 import fs from "fs";
+import bcrypt from "bcryptjs";
 
 // This is a singleton to ensure we only have one database connection.
 let db: Database | null = null;
@@ -156,6 +157,19 @@ async function initializeDatabase() {
             );
         }
         console.log("Seeding completed.");
+    }
+
+    // Seed default admin if none exist
+    const adminCount = await db.get("SELECT COUNT(*) as count FROM users WHERE role = 'admin'");
+    if (adminCount.count === 0) {
+        console.log("Seeding default admin...");
+        const passwordHash = await bcrypt.hash('admin786', 10);
+        await db.run(
+            `INSERT INTO users (id, email, full_name, role, password_hash) 
+             VALUES (?, ?, ?, ?, ?)`,
+            ['admin-1', 'admin@grandeelegance.com', 'Grand Admin', 'admin', passwordHash]
+        );
+        console.log("Default admin seeded.");
     }
 }
 
