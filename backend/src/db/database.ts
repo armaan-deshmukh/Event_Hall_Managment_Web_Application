@@ -135,7 +135,7 @@ async function initializeDatabase() {
                 base_price: 12000,
                 max_guests: 80,
                 duration_hours: 4,
-                image_url: '/kids_birthday_party.png'
+                image_url: 'public/kids_birthday_party.png'
             },
             {
                 id: '6',
