@@ -27,7 +27,7 @@ async function getDbConnection(): Promise<Database> {
     });
 
     await newDb.exec('PRAGMA foreign_keys = ON;');
-    
+
     db = newDb;
     return db;
 }
@@ -81,7 +81,7 @@ async function initializeDatabase() {
     `);
 
     console.log("Database tables are ready.");
-    
+
     // Seed default packages if none exist
     const packagesCount = await db.get('SELECT COUNT(*) as count FROM packages');
     if (packagesCount.count === 0) {
@@ -150,13 +150,22 @@ async function initializeDatabase() {
         ];
 
         for (const pkg of defaultPackages) {
-            await db.run(
-                `INSERT INTO packages (id, name, category, description, base_price, max_guests, duration_hours, image_url) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
-            );
+            // Check if package exists, if so update it, otherwise insert
+            const existing = await db.get('SELECT id FROM packages WHERE id = ?', [pkg.id]);
+            if (existing) {
+                await db.run(
+                    `UPDATE packages SET image_url = ?, name = ?, category = ?, description = ? WHERE id = ?`,
+                    [pkg.image_url, pkg.name, pkg.category, pkg.description, pkg.id]
+                );
+            } else {
+                await db.run(
+                    `INSERT INTO packages (id, name, category, description, base_price, max_guests, duration_hours, image_url) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
+                );
+            }
         }
-        console.log("Seeding completed.");
+        console.log("Seeding/Updating completed.");
     }
 
     // Seed default admin if none exist
