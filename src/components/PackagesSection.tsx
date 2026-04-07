@@ -43,7 +43,7 @@ export function PackagesSection() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const API_URL = 'http://localhost:3000';
+  const API_URL = ''; // Relative path because frontend is served by backend
 
 
   useEffect(() => {
