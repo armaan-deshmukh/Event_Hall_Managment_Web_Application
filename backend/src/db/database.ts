@@ -35,7 +35,7 @@ async function getDbConnection(): Promise<Database> {
 async function initializeDatabase() {
     const db = await getDbConnection();
 
-    console.log("Running database migrations...");
+    // Running database migrations...
 
     // User Table
     await db.exec(`
@@ -80,12 +80,9 @@ async function initializeDatabase() {
         );
     `);
 
-    console.log("Database tables are ready.");
-
     // Seed default packages if none exist
     const packagesCount = await db.get('SELECT COUNT(*) as count FROM packages');
     if (packagesCount.count === 0) {
-        console.log("Seeding default packages...");
         const defaultPackages = [
             {
                 id: '1',
@@ -150,35 +147,28 @@ async function initializeDatabase() {
         ];
 
         for (const pkg of defaultPackages) {
-            // Check if package exists, if so update it, otherwise insert
-            const existing = await db.get('SELECT id FROM packages WHERE id = ?', [pkg.id]);
-            if (existing) {
-                await db.run(
-                    `UPDATE packages SET image_url = ?, name = ?, category = ?, description = ? WHERE id = ?`,
-                    [pkg.image_url, pkg.name, pkg.category, pkg.description, pkg.id]
-                );
-            } else {
-                await db.run(
-                    `INSERT INTO packages (id, name, category, description, base_price, max_guests, duration_hours, image_url) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
-                );
-            }
+            await db.run(
+                `INSERT INTO packages (id, name, category, description, base_price, max_guests, duration_hours, image_url) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
+            );
         }
-        console.log("Seeding/Updating completed.");
+
     }
 
     // Seed default admin if none exist
-    const adminCount = await db.get("SELECT COUNT(*) as count FROM users WHERE role = 'admin'");
-    if (adminCount.count === 0) {
-        console.log("Seeding default admin...");
+    const adminEmail = 'admin@grandeelegance.com';
+    const existingAdmin = await db.get("SELECT id FROM users WHERE email = ?", [adminEmail]);
+    
+    if (!existingAdmin) {
         const passwordHash = await bcrypt.hash('admin786', 10);
+        const adminId = 'admin-default-id'; 
+
         await db.run(
             `INSERT INTO users (id, email, full_name, role, password_hash) 
              VALUES (?, ?, ?, ?, ?)`,
-            ['admin-1', 'admin@grandeelegance.com', 'Grand Admin', 'admin', passwordHash]
+            [adminId, adminEmail, 'Grand Admin', 'admin', passwordHash]
         );
-        console.log("Default admin seeded.");
     }
 }
 
