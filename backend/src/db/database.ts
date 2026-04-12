@@ -34,7 +34,7 @@ async function getDbConnection(): Promise<Database> {
 async function initializeDatabase() {
     const db = await getDbConnection();
 
-    // Running database migrations...
+    console.log("Running database migrations...");
 
     // User Table
     await db.exec(`
@@ -79,10 +79,12 @@ async function initializeDatabase() {
         );
     `);
 
-
+    console.log("Database tables are ready.");
+    
     // Seed default packages if none exist
     const packagesCount = await db.get('SELECT COUNT(*) as count FROM packages');
     if (packagesCount.count === 0) {
+        console.log("Seeding default packages...");
         const defaultPackages = [
             {
                 id: '1',
@@ -153,8 +155,8 @@ async function initializeDatabase() {
                 [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
             );
         }
+        console.log("Seeding completed.");
     }
 }
 
 export { getDbConnection, initializeDatabase };
-
