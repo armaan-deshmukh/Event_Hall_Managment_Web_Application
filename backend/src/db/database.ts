@@ -2,7 +2,6 @@ import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import path from "path";
 import fs from "fs";
-import bcrypt from "bcryptjs";
 
 // This is a singleton to ensure we only have one database connection.
 let db: Database | null = null;
@@ -154,21 +153,6 @@ async function initializeDatabase() {
                 [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
             );
         }
-    }
-
-    // Seed default admin if none exist
-    const adminEmail = 'admin@grandeelegance.com';
-    const existingAdmin = await db.get("SELECT id FROM users WHERE email = ?", [adminEmail]);
-    
-    if (!existingAdmin) {
-        const passwordHash = await bcrypt.hash('admin786', 10);
-        const adminId = 'admin-default-id'; 
-
-        await db.run(
-            `INSERT INTO users (id, email, full_name, role, password_hash) 
-             VALUES (?, ?, ?, ?, ?)`,
-            [adminId, adminEmail, 'Grand Admin', 'admin', passwordHash]
-        );
     }
 }
 
