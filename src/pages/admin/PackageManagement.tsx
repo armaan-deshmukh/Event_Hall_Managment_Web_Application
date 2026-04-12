@@ -89,20 +89,13 @@ const PackageManagement = () => {
 
     const onSubmit = async (formData: PackageFormData) => {
         const data = new FormData();
-        
-        // Append all text fields
-        data.append('name', formData.name);
-        data.append('category', formData.category);
-        data.append('description', formData.description || '');
-        data.append('base_price', formData.base_price.toString());
-        data.append('max_guests', formData.max_guests.toString());
-        data.append('duration_hours', formData.duration_hours.toString());
-        data.append('is_active', formData.is_active.toString());
-
-        // Append image if selected
-        if (formData.image && formData.image[0]) {
-            data.append('image', formData.image[0]);
-        }
+        Object.entries(formData).forEach(([key, value]) => {
+            if (key === 'image' && value[0]) {
+                data.append(key, value[0]);
+            } else if (value !== undefined && value !== null) {
+                data.append(key, String(value));
+            }
+        });
 
         try {
             if (editingPackage) {
@@ -124,7 +117,6 @@ const PackageManagement = () => {
     };
     
     const deletePackage = async (packageId: string) => {
-        if (!confirm("Are you sure you want to delete this package?")) return;
         try {
             await api.delete(`/packages/${packageId}`);
             toast.success("Package deleted successfully");
@@ -145,22 +137,10 @@ const PackageManagement = () => {
 
     useEffect(() => {
         if (isDialogOpen) {
-            if (editingPackage) {
-                reset({
-                    name: editingPackage.name,
-                    category: editingPackage.category,
-                    description: editingPackage.description || '',
-                    base_price: editingPackage.base_price,
-                    max_guests: editingPackage.max_guests,
-                    duration_hours: editingPackage.duration_hours,
-                    is_active: editingPackage.is_active
-                });
-            } else {
-                reset({
-                    name: '', category: '', description: '', base_price: 0,
-                    max_guests: 0, duration_hours: 0, is_active: true
-                });
-            }
+            reset(editingPackage || {
+                name: '', category: '', description: '', base_price: 0,
+                max_guests: 0, duration_hours: 0, is_active: true
+            });
         }
     }, [isDialogOpen, editingPackage, reset]);
 
@@ -170,14 +150,8 @@ const PackageManagement = () => {
             header: "Image",
             cell: ({ row }) => {
                 const imageUrl = row.original.image_url;
-                return imageUrl ? (
-                    <img 
-                        src={imageUrl} 
-                        alt={row.original.name} 
-                        className="h-12 w-12 object-cover rounded-md border" 
-                        onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=No+Image'; }}
-                    />
-                ) : <div className="h-12 w-12 bg-gray-100 rounded-md flex items-center justify-center text-[10px] text-gray-400">No Image</div>
+                const API_URL = 'http://localhost:3000';
+                return imageUrl ? <img src={`${API_URL}${imageUrl}`} alt={row.original.name} className="h-16 w-16 object-cover rounded-md" /> : null
             }
         },
         { accessorKey: "name", header: "Name" },
