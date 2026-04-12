@@ -27,7 +27,7 @@ async function getDbConnection(): Promise<Database> {
     });
 
     await newDb.exec('PRAGMA foreign_keys = ON;');
-
+    
     db = newDb;
     return db;
 }
@@ -79,6 +79,7 @@ async function initializeDatabase() {
             FOREIGN KEY (package_id) REFERENCES packages (id) ON DELETE CASCADE
         );
     `);
+
 
     // Seed default packages if none exist
     const packagesCount = await db.get('SELECT COUNT(*) as count FROM packages');
@@ -153,7 +154,6 @@ async function initializeDatabase() {
                 [pkg.id, pkg.name, pkg.category, pkg.description, pkg.base_price, pkg.max_guests, pkg.duration_hours, pkg.image_url]
             );
         }
-
     }
 
     // Seed default admin if none exist
