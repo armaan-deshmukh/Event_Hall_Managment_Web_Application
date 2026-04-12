@@ -34,17 +34,17 @@ const packageSchema = z.object({
     id: z.string().optional(),
     name: z.string().min(3, "Name must be at least 3 characters"),
     category: z.string().min(2, "Category is required"),
-    description: z.string().optional().nullable(),
+    description: z.string().optional(),
     base_price: z.preprocess(
-        (val) => (typeof val === 'string' ? parseFloat(val) : val),
+        (a) => parseFloat(z.string().parse(a)),
         z.number().positive("Price must be a positive number")
     ),
     max_guests: z.preprocess(
-        (val) => (typeof val === 'string' ? parseInt(val, 10) : val),
+        (a) => parseInt(z.string().parse(a), 10),
         z.number().int().positive("Max guests must be a positive number")
     ),
     duration_hours: z.preprocess(
-        (val) => (typeof val === 'string' ? parseInt(val, 10) : val),
+        (a) => parseInt(z.string().parse(a), 10),
         z.number().int().positive("Duration must be a positive number")
     ),
     is_active: z.boolean().default(true),
